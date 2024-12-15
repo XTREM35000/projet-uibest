@@ -1,0 +1,47 @@
+{
+  "name": "gogo-express",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "cross-env HOST=0.0.0.0 nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest",
+    "generate-env": "node generateEnv.js",
+    "ngrok": "ngrok http 3000"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.1",
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@heroicons/vue": "^2.2.0",
+    "@nuxt/schema": "^3.14.1592",
+    "@nuxt/ui": "^2.20.0",
+    "@nuxtjs/color-mode": "^3.5.2",
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@pinia/nuxt": "^0.5.1",
+    "axios": "^1.6.7",
+    "bcrypt": "^5.1.1",
+    "csrf": "^3.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "libphonenumber-js": "^1.11.16",
+    "mongoose": "^8.2.0",
+    "nuxt": "^3.13.0",
+    "pinia": "^2.1.7",
+    "proxima-vue": "^0.4.5",
+    "vue3-toastify": "^0.2.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@nuxt/types": "^2.18.1",
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@types/axios": "^0.9.36",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^1.3.1",
+    "cross-env": "^7.0.3",
+    "vitest": "^1.3.1"
+  }
+}

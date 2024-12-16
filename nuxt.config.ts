@@ -26,7 +26,9 @@ export default defineNuxtConfig({
   css: [
     '@fortawesome/fontawesome-free/css/all.css',
     '@/assets/css/main.css',
-    'vue3-toastify/dist/index.css'
+    'vue3-toastify/dist/index.css',
+    '@/assets/css/main.css',  // Assurez-vous que le fichier main.css est inclus
+
   ],
   vite: {
     css: {

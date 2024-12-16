@@ -29,11 +29,11 @@
             v-for="item in links"
             :key="item.to"
             :to="item.to"
-            class="text-white hover:text-blue-200 transition-colors"
+            class="text-white hover:text-blue-200 transition-colors flex items-center"
             :class="{ 'nav-link-active': isCurrentPath(item.to) }"
             prefetch
           >
-            <i :class="item.icon" class="mr-2"></i>{{ item.label }}
+            <i :class="item.icon" class="mr-2"></i> {{ item.label }}
           </NuxtLink>
         </div>
 
@@ -68,18 +68,18 @@
     </div>
 
     <!-- Mobile Menu -->
-    <div v-if="isMenuOpen" class="sm:hidden bg-[#0070BA] px-4 py-4">
+    <div v-if="isMenuOpen" class="sm:hidden bg-[#0070BA] px-4 py-4" ref="menu">
       <div class="space-y-4">
         <NuxtLink
           v-for="item in links"
           :key="item.to"
           :to="item.to"
           @click="closeMenu"
-          class="block text-white"
+          class="block text-white flex items-center"
           :class="{ 'nav-link-active': isCurrentPath(item.to) }"
           prefetch
         >
-          <i :class="item.icon" class="mr-2"></i>{{ item.label }}
+          <i :class="item.icon" class="mr-2"></i> {{ item.label }}
         </NuxtLink>
 
         <!-- Ajouter les liens Se connecter et S'inscrire après les autres items -->
@@ -90,12 +90,6 @@
           >
             Se connecter
           </button>
-          <button
-            @click="navigateTo('/auth/register')"
-            class="block text-white auth-button"
-          >
-            S'inscrire
-          </button>
         </template>
       </div>
     </div>
@@ -104,9 +98,11 @@
   <!-- Menu Horizontal visible uniquement si connecté -->
   <UHorizontalNavigation v-if="isAuthenticated" :links="links" class="border-b border-gray-200 dark:border-gray-800" />
 </template>
+ 
+
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
@@ -116,18 +112,23 @@ const auth = useAuthStore();
 const user = computed(() => auth.user);
 
 // Liste des liens de navigation
+
 const links = [
-  { label: "Accueil", icon: "i-heroicons-home", to: "/" },
-  { label: "Services", icon: "i-heroicons-briefcase", to: "/services" },
-  { label: "Tarifs", icon: "i-heroicons-currency-dollar", to: "/pricing" },
-  { label: "Contact", icon: "i-heroicons-mail", to: "/contact" }
+  { label: "Accueil", to: "/", icon: "fas fa-home" },
+  { label: "Services", to: "/services", icon: "fas fa-cogs" },
+  { label: "Tarifs", to: "/pricing", icon: "fas fa-envelope" },
+  { label: "Contacts", to: "/contact", icon: "fas fa-info-circle" },
 ];
 
+// const isAuthenticated = false; // Exemple, ajustez en fonction de l'état réel
 const route = useRoute();
 const router = useRouter();
 
 // Mobile menu state
 const isMenuOpen = ref(false);
+
+// Référence pour le menu mobile
+const menuRef = ref<HTMLElement | null>(null);
 
 // Fonctions
 const toggleMenu = () => {
@@ -148,19 +149,35 @@ const handleLogout = () => {
 const navigateTo = (path: string) => {
   router.push(path);
 };
+
+// Fermeture du menu burger si on clique en dehors
+const handleClickOutside = (event: MouseEvent) => {
+  if (menuRef.value && !menuRef.value.contains(event.target as Node)) {
+    closeMenu();
+  }
+};
+
+// Ajout et nettoyage de l'écouteur d'événements
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <style scoped>
 /* Style pour le bouton "Se connecter" et "S'inscrire" */
 .auth-button {
-  background-color: #415393;
+  background-color: #989467;
   padding: 8px 16px;
   border-radius: 4px;
   font-weight: 500;
 }
 
 .auth-button:hover {
-  background-color: #07233c;
+  background-color: #6d8889;
 }
 
 .nav-link-active {

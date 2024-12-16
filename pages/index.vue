@@ -24,8 +24,8 @@
         size="lg"
         color="white"
         variant="outline"
-        class="border-[#0087e0] text-[#0087e0] font-semibold px-6 py-3 rounded-lg hover:bg-[#0087e0] hover:text-white transition">
-        <Icon name="i-heroicons-magnifying-glass" class="w-5 h-5 mr-2" />
+        class="border-[#ffffff] text-[#ffffff] font-semibold px-6 py-3 rounded-lg hover:bg-[#0087e0] hover:text-white transition">
+        <Icon name="i-heroicons-magnifying-glass" class="w-5 h-5 mr-2" /> 
         Suivre un colis
       </UButton>
     </div>
@@ -77,19 +77,27 @@
     </section>
 
     <!-- Section Graphique de démonstration -->
-    <!-- Section des autres contenus -->
-<section class="section2 relative h-auto py-16 bg-gray-50 bg-cover bg-center bg-no-repeat" style="background-image: url('/section2.png')">
+    <section class="section2 relative h-auto py-16 bg-gray-50 bg-cover bg-center bg-no-repeat background-size: cover"
+  style="background-image: url('/section2.png')"
+>
+  <!-- Contenu superposé -->
   <div class="container mx-auto px-4 relative z-10">
-    <h2 class="text-3xl font-bold text-center text-white mb-12">Suivi de vos envois en temps réel</h2>
+    <h2 class="text-3xl font-bold text-center text-white mb-12">
+      Suivi de vos envois en temps réel
+    </h2>
     <div class="flex justify-center">
       <div class="w-full md:w-1/2 bg-gray-100 p-8 rounded-lg shadow-lg">
-        <h3 class="text-2xl text-blue-600 font-semibold text-center mb-4">Statistiques d'expédition périodique</h3>
+        <h3 class="text-2xl text-blue-600 font-semibold text-center mb-4">
+          Statistiques d'expédition périodique
+        </h3>
         <div class="h-64 bg-gray-200 flex items-center justify-center text-gray-500">
           <p>Graphique de démonstration</p>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Overlay sombre pour contraste -->
   <div class="absolute inset-0 bg-black/30 z-5"></div>
 </section>
 

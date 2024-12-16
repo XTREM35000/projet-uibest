@@ -2,6 +2,15 @@
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  css: {
+    postcss: {
+      plugins: [
+        require('postcss-import'),
+        require('tailwindcss'),
+        require('autoprefixer'),
+      ],
+    },
+  },
   test: {
     environment: 'node',
     setupFiles: ['./tests/setup.ts'],
@@ -17,5 +26,5 @@ export default defineConfig({
         'tests/setup.ts',
       ],
     },
-  },
+  }
 })

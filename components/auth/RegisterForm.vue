@@ -8,7 +8,8 @@
             <UInput
               v-model="form.lastName"
               placeholder="Nom"
-              :color="errors.lastName ? 'red' : undefined"
+              :color="errors.lastName ? 'red' : 'gray'"
+              class="input-field"
             />
             <FormError :error="errors.lastName" />
           </UFormGroup>
@@ -18,7 +19,8 @@
             <UInput
               v-model="form.firstName"
               placeholder="Prénom"
-              :color="errors.firstName ? 'red' : undefined"
+              :color="errors.firstName ? 'red' : 'gray'"
+              class="input-field"
             />
             <FormError :error="errors.firstName" />
           </UFormGroup>
@@ -31,7 +33,8 @@
           v-model="form.email"
           type="email"
           placeholder="email@example.com"
-          :color="errors.email ? 'red' : undefined"
+          :color="errors.email ? 'red' : 'gray'"
+          class="input-field"
         />
         <FormError :error="errors.email" />
       </UFormGroup>
@@ -43,6 +46,7 @@
           :selectedCountryCode="form.countryCode"
           @update:selectedCountryCode="form.countryCode = $event"
           @raw-phone="handleRawPhone"
+          class="input-field"
         />
         <FormError :error="errors.phoneNumber" />
       </div>
@@ -52,6 +56,7 @@
         <Password
           v-model="form.password"
           :type="showPassword ? 'text' : 'password'"
+          class="input-field"
         />
         <FormError :error="errors.password" />
       </div>
@@ -131,3 +136,28 @@ const handleSubmit = async () => {
   }
 }
 </script>
+
+<style scoped>
+.input-field {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #4F9BFE;
+  outline: none;
+}
+
+.input-field.error {
+  border-color: #FF4D4F;
+}
+
+.form-error {
+  color: #FF4D4F;
+  font-size: 12px;
+  margin-top: 4px;
+}
+</style>

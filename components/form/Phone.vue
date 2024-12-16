@@ -1,28 +1,3 @@
-<template>
-  <div>
-    <!-- Sélecteur de pays avec le countryCode par défaut -->
-    <select v-model="selectedCountryCode" @change="onCountryCodeChange">
-      <option
-        v-for="country in countryCodes"
-        :key="country.code"
-        :value="country.code"
-      >
-        {{ country.name }} ({{ country.code }})
-      </option>
-    </select>
-
-    <!-- Champ de téléphone -->
-    <ProximaPhone
-      v-model="phoneNumber"
-      :countryCode="selectedCountryCode"
-      :format="`${props.selectedCountryCode} ** ** ** ** **`"
-      validity-status="both"
-      mask-char=" "
-      @input="onPhoneNumberChange"
-    />
-  </div>
-</template>
-
 <script setup>
 import { ref, watch } from "vue";
 import ProximaPhone, { getRawPhone } from "proxima-vue/field/phone";
@@ -59,8 +34,6 @@ const emit = defineEmits([
 
 // État local
 const phoneNumber = ref(props.modelValue || ""); // Utilisation du modèle si fourni
-
-// Sélection du countryCode par défaut
 let selectedCountryCode = ref(props.selectedCountryCode);
 
 // Met à jour le numéro complet brut
@@ -90,16 +63,43 @@ watch(
 );
 </script>
 
+<template>
+  <div class="flex flex-col gap-4">
+    <!-- Sélecteur de pays -->
+    <select
+      v-model="selectedCountryCode"
+      @change="onCountryCodeChange"
+      class="p-3 rounded-md border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+    >
+      <option
+        v-for="country in countryCodes"
+        :key="country.code"
+        :value="country.code"
+      >
+        {{ country.name }} ({{ country.code }})
+      </option>
+    </select>
+
+    <!-- Champ de téléphone -->
+    <ProximaPhone
+      v-model="phoneNumber"
+      :countryCode="selectedCountryCode"
+      :format="`${selectedCountryCode} ** ** ** ** **`"
+      validity-status="both"
+      mask-char=" "
+      @input="onPhoneNumberChange"
+      class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+</template>
+
 <style scoped>
-/* Style du select et du champ de téléphone */
+/* Personnalisation du champ de téléphone */
 select {
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
+  transition: all 0.3s ease;
 }
 
 .proxima-phone-input {
-  width: 100%;
-  padding: 0.5rem;
+  transition: all 0.3s ease;
 }
 </style>

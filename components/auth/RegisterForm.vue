@@ -73,13 +73,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
-import type { RegisterData } from '~/types'
+import type { RegisterData } from '../../types'
 import { useAuthStore } from '~/stores/auth'
-import { useFormValidation } from '~/composables/useFormValidation'
-import { registerSchema } from '~/utils/validation'
+import { formValidation } from '~/composables/useFormValidation'
+import { z } from 'zod'
 
 const router = useRouter()
 const authStore = useAuthStore()
+
+const registerSchema = z.object({
+  firstName: z.string().min(2, 'Le prénom doit contenir au moins 2 caractères'),
+  lastName: z.string().min(2, 'Le nom doit contenir au moins 2 caractères'),
+  email: z.string().email('Email invalide'),
+  phoneNumber: z.string().min(8, 'Numéro de téléphone invalide'),
+  countryCode: z.string(),
+  password: z.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères'),
+  role: z.enum(['client', 'admin'])
+})
 
 const form = ref<RegisterData>({
   firstName: '',
@@ -91,7 +101,7 @@ const form = ref<RegisterData>({
   role: 'client'
 })
 
-const { errors, validate } = useFormValidation(registerSchema)
+const { errors, validate } = formValidation(registerSchema)
 const loading = ref(false)
 const showPassword = ref(false)
 const rawPhone = ref('')
@@ -107,7 +117,8 @@ const handleSubmit = async () => {
   try {
     const success = await authStore.register({
       ...form.value,
-      phoneNumber: rawPhone.value
+      phoneNumber: rawPhone.value,
+      fullPhoneNumber: ''
     })
     if (success) {
       toast.success('Inscription réussie')

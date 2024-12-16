@@ -1,3 +1,4 @@
+// server/api/users/index.post.ts
 import { User, UserRole } from '~/server/models/User'
 import { requireRole } from '~/server/utils/auth'
 

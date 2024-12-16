@@ -1,5 +1,5 @@
 <template>
-  <button
+  <Button
     :class="[
       'px-4 py-2 rounded-md transition-colors',
       'focus:outline-none focus:ring-2 focus:ring-offset-2',
@@ -19,7 +19,7 @@
     <span v-else>
       <slot />
     </span>
-  </button>
+  </Button>
 </template>
 
 <script setup lang="ts">

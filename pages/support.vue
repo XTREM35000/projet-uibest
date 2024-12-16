@@ -13,7 +13,7 @@
         <Phone />
       </div>
       <div class="py-4 bg-gray-100">
-        <Password />
+        <PassWord />
       </div>
     </div>
   </div>
@@ -21,5 +21,4 @@
 <script setup lang="ts">
 import "vue3-toastify/dist/index.css";
 import Phone from "../components/form/Phone.vue";
-import Password from "../components/form/PassWord.vue";
 </script>

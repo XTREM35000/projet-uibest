@@ -8,23 +8,26 @@ export default defineNuxtConfig({
       ]
     }
   },
-
   modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
+    ['@nuxt/ui', { icons: ['heroicons'] }],
+    '@nuxt/image-edge',
+    '@nuxt/image'
   ],
-
+  image: {
+    dir: 'assets/images', // Répertoire des images
+    formats: ['webp', 'jpg', 'png'],
+    quality: 80,
+  },
   runtimeConfig: {
     mongodbUri: process.env.MONGODB_URI,
     jwtSecret: process.env.JWT_SECRET
   },
-
   css: [
     '@fortawesome/fontawesome-free/css/all.css',
     '@/assets/css/main.css',
     'vue3-toastify/dist/index.css'
   ],
-
   vite: {
     css: {
       preprocessorOptions: {
@@ -34,6 +37,5 @@ export default defineNuxtConfig({
       }
     }
   },
-
   compatibilityDate: '2024-12-14'
-})
+});

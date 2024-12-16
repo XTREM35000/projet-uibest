@@ -1,16 +1,26 @@
 import { defineStore } from 'pinia';
 import { toast } from 'vue3-toastify';
 
+// Définir le type pour l'utilisateur
 interface User {
   id: string;
-  fullPhoneNumber?: string; // Optionnel si vous n'obtenez pas ce champ
-  name?: string; // Optionnel si vous n'obtenez pas ce champ
+  fullPhoneNumber?: string;
+  name?: string;
   role: string;
   avatar?: string;
-  username?: string; // Ajout de username si c'est ce qui est renvoyé par l'API
+  username?: string;
   email: string;
+  lastName?: string;
+  firstName?: string;
 }
 
+// Définir le type pour la réponse de connexion
+interface LoginResponse {
+  user: User;
+  token: string;
+}
+
+// Définir l'état de l'authentification
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -19,11 +29,13 @@ interface AuthState {
   error: string;
 }
 
+// Définir les données de connexion
 interface LoginCredentials {
   fullPhoneNumber: string;
   password: string;
 }
 
+// Définir les données d'inscription
 interface RegisterData extends LoginCredentials {
   firstName: string;
   lastName: string;
@@ -47,21 +59,25 @@ export const useAuthStore = defineStore('auth', {
       this.error = '';
 
       try {
-        const response = await $fetch('/api/auth/login', {
+        const response: LoginResponse = await $fetch('/api/auth/login', {
           method: 'POST',
           body: { fullPhoneNumber, password }
         });
 
-        this.user = {
-          id: response.user.id,
-          email: response.user.email,
-          role: response.user.role,
-          username: response.user.firstName,
-          // Si vous avez besoin de fullPhoneNumber et name, vous pouvez les ajouter ici si l'API les envoie
-        };
-        this.isAuthenticated = true;
-        this.isAdmin = response.user.role === 'admin';
-        toast.success('Connexion réussie');
+        if (response?.user) {
+          this.user = {
+            id: response.user.id,
+            email: response.user.email,
+            role: response.user.role,
+            username: response.user.firstName, // Assurez-vous que 'firstName' est correct
+            fullPhoneNumber: response.user.fullPhoneNumber,
+            avatar: response.user.avatar,
+          };
+
+          this.isAuthenticated = true;
+          this.isAdmin = response.user.role === 'admin';
+          toast.success('Connexion réussie');
+        }
       } catch (err) {
         this.error = 'Échec de la connexion';
         toast.error('Échec de la connexion');
@@ -76,17 +92,18 @@ export const useAuthStore = defineStore('auth', {
       this.error = '';
 
       try {
-        const response = await $fetch('/api/auth/register', {
+        const response = await $fetch<{ user: User, token: string }>('/api/auth/register', {
           method: 'POST',
           body: data
         });
 
-        if (response) {
-          // Mettre à jour l'état avec les données de l'utilisateur
+        if (response?.user && response.user.id && response.user.role && response.user.email) {
           this.user = response.user;
           this.isAuthenticated = true;
           this.isAdmin = response.user.role === 'admin';
           return true;
+        } else {
+          throw new Error('Invalid user data received from server');
         }
       } catch (error) {
         this.error = 'Erreur lors de l\'inscription';
@@ -98,23 +115,18 @@ export const useAuthStore = defineStore('auth', {
 
     // Déconnexion
     async logout() {
-      try {
-        await $fetch('/api/auth/logout', { method: 'POST' });
-        this.user = null;
-        this.isAuthenticated = false;
-        this.isAdmin = false;
-        toast.success('Déconnexion réussie');
-      } catch (err) {
-        toast.error('Erreur lors de la déconnexion');
-      }
+      this.user = null;
+      this.isAuthenticated = false;
+      this.isAdmin = false;
+      toast.success('Déconnexion réussie');
     }
   },
 
   getters: {
     // Vérifier si l'utilisateur est authentifié
-    isAuthenticated: (state) => !!state.user,
+    isUserAuthenticated: (state) => state.isAuthenticated,
 
     // Vérifier si l'utilisateur est un administrateur
-    isAdmin: (state) => state.user?.role === 'admin'
+    isAdminAuthenticated: (state) => state.isAdmin
   }
 });

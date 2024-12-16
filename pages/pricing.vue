@@ -5,7 +5,7 @@
       Nos Tarifs
     </h1>
 
-    <Icon name="uil:github" style="color: black" />
+    <!-- <Icon name="uil:github" style="color: black" /> -->
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <!-- Tarifs - Exemple de carte -->
